@@ -15,7 +15,7 @@ func CreateZapUtil() *zap.SugaredLogger {
 		enc.AppendString(t.Format(consts.TimeForMate))
 	}
 	encoderConfig.TimeKey = "time"
-	encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	encoderConfig.EncodeDuration = zapcore.MillisDurationEncoder
 
 	encoder := zapcore.NewConsoleEncoder(encoderConfig) // 日志格式
