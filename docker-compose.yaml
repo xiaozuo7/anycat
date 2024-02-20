@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  anycat:
+    image: swr.cn-south-1.myhuaweicloud.com/xiaozuo7/anycat:v1
+    container_name: anycat
+    networks:
+      - my-network
+
+  nginx-proxy:
+    image: nginx
+    container_name: nginx-proxy
+    volumes:
+      - /home/docker_volume/nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

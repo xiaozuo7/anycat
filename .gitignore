@@ -7,6 +7,11 @@
 *.dll
 *.so
 *.dylib
+.idea
+.vscode
+/ssl
+nginx.conf
+*.log
 
 # Test binary, built with `go test -c`
 *.test
