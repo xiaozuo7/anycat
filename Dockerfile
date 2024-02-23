@@ -17,7 +17,7 @@ WORKDIR /app
 COPY --from=builder /build/anycat /app/
 # COPY --from=builder /build/config.yaml /app/
 
-RUN apk updata && apk add ca-certificates && rm -rf /var/cache/apk/* && apk add tzdata
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/* && apk add tzdata
 
 EXPOSE 20100
 
