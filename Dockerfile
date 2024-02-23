@@ -17,6 +17,6 @@ WORKDIR /app
 COPY --from=builder /build/anycat /app/
 COPY --from=builder /build/config.yaml /app/
 
-EXPOSE 8080
+EXPOSE 0
 
 ENTRYPOINT ["./anycat"]

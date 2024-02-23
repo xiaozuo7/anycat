@@ -7,7 +7,8 @@ services:
     networks:
       - my-network
     volumes:
-      - /home/docker_volume/anycat/logs:/build/logs
+      - /home/docker_volume/anycat/config:/app/config
+      - /home/docker_volume/anycat/logs:/app/logs
 
   nginx-proxy:
     image: nginx
