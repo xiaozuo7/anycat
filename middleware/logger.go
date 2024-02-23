@@ -49,8 +49,10 @@ func Log() gin.HandlerFunc {
 		if len(c.Errors) > 0 {
 			variable.ZapLog.Errorf("Request log error: %s", c.Errors.ByType(gin.ErrorTypePrivate).String())
 		}
-		if status := c.Writer.Status(); status >= 400 {
+		if status := c.Writer.Status(); status == 404 {
 			variable.ZapLog.Warnf("Request log: %s", string(str))
+		} else if status >= 500 {
+			variable.ZapLog.Errorf("Request log: %s", string(str))
 		} else {
 			variable.ZapLog.Infof("Request log: %s", string(str))
 		}

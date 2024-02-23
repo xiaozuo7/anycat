@@ -15,8 +15,8 @@ FROM alpine:3.18
 
 WORKDIR /app
 COPY --from=builder /build/anycat /app/
-COPY --from=builder /build/config.yaml /app/
+# COPY --from=builder /build/config.yaml /app/
 
-EXPOSE 0
+EXPOSE 20100
 
 ENTRYPOINT ["./anycat"]
