@@ -1,6 +1,5 @@
 FROM golang:1.21.1-alpine3.18 AS builder
 LABEL authors="anycat"
-RUN apk --no-cache add tzdata
 
 WORKDIR /build
 
@@ -16,11 +15,7 @@ FROM alpine:3.18
 
 WORKDIR /app
 COPY --from=builder /build/anycat /app/
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
-
-ENV TZ=Asia/Shanghai
 # COPY --from=builder /build/config.yaml /app/
-
 
 
 EXPOSE 20100
