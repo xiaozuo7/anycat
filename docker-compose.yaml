@@ -11,10 +11,8 @@ services:
       - /home/docker_volume/anycat/logs:/app/logs
 
   nginx-proxy:
-    image: nginx
+    image: swr.cn-south-1.myhuaweicloud.com/xiaozuo7/nginx:v1
     container_name: nginx-proxy
-    volumes:
-      - /home/docker_volume/nginx:/etc/nginx/conf.d
     ports:
       - "80:80"
     networks:
