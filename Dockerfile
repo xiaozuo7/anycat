@@ -17,12 +17,7 @@ WORKDIR /app
 COPY --from=builder /build/anycat /app/
 # COPY --from=builder /build/config.yaml /app/
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
-    apk add curl busybox-extras --no-cache unrar unzip && \
-    rm -rf /var/cache/apk/* /tmp/* && \
-    if [ ! -e /etc/nsswitch.conf ];then echo 'hosts: files dns' > /etc/nsswitch.conf; fi
-    
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/* && apk add tzdata
+RUN apk add --no-cache tzdata
 
 EXPOSE 20100
 
