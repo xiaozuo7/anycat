@@ -6,6 +6,8 @@ services:
     container_name: anycat
     networks:
       - my-network
+    volumes:
+      - /home/docker_volume/anycat/logs:/build/logs
 
   nginx-proxy:
     image: nginx
