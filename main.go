@@ -21,5 +21,6 @@ func main() {
 }
 
 func init() {
+	boot.InitConf()
 	boot.InitLogger()
 }

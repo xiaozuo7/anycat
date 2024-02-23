@@ -1,0 +1,10 @@
+httpServer:
+  port: ":20100"
+
+logs:
+  logName: "./logs/anycat.log"
+  logType: "console"
+  maxSize: 100
+  maxBackups: 10
+  maxAge: 7
+  compress: false

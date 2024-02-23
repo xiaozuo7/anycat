@@ -5,13 +5,14 @@ import (
 	"anycat/middleware"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 func InitRouter() {
-	gin.SetMode("debug")
-	r := gin.New()
+	r := gin.Default()
 	r.Use(gin.Recovery())
 	r.Use(middleware.Cors())
+	r.Use(middleware.Log())
 
 	router := r.Group("/api/v1")
 	{
@@ -20,7 +21,7 @@ func InitRouter() {
 
 	}
 
-	err := r.Run(":8080")
+	err := r.Run(viper.GetString("httpServer.port"))
 	if err != nil {
 		panic(err)
 	}
