@@ -17,6 +17,8 @@ WORKDIR /app
 COPY --from=builder /build/anycat /app/
 # COPY --from=builder /build/config.yaml /app/
 
+RUN apk updata && apk add ca-certificates && rm -rf /var/cache/apk/* && apk add tzdata
+
 EXPOSE 20100
 
 ENTRYPOINT ["./anycat"]
