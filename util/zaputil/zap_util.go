@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func CreateZapUtil() *zap.SugaredLogger {
+func CreateZapUtil() *zap.Logger {
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 		enc.AppendString(t.Format(consts.TimeForMate))
@@ -33,6 +33,6 @@ func CreateZapUtil() *zap.SugaredLogger {
 		Compress:   viper.GetBool("logs.compress"),  //是否压缩/归档旧文件
 	}
 	writer := zapcore.AddSync(lumberJackLogger)
-	zapCore := zapcore.NewCore(encoder, writer, zap.InfoLevel)                          // 日志级别
-	return zap.New(zapCore, zap.AddCaller(), zap.AddStacktrace(zap.ErrorLevel)).Sugar() // 抛出堆栈级别
+	zapCore := zapcore.NewCore(encoder, writer, zap.InfoLevel)                  // 日志级别
+	return zap.New(zapCore, zap.AddCaller(), zap.AddStacktrace(zap.ErrorLevel)) // 抛出堆栈级别
 }
