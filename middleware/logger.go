@@ -48,12 +48,12 @@ func Log() gin.HandlerFunc {
 			variable.ZapLog.Error("Request log error", zap.Error(err))
 		}
 		if len(c.Errors) > 0 {
-			variable.ZapLog.Error("Request log error: %s", zap.String("error", c.Errors.ByType(gin.ErrorTypePrivate).String()))
+			variable.ZapLog.Error("Request log errors", zap.String("error", c.Errors.ByType(gin.ErrorTypePrivate).String()))
 		}
 		if status := c.Writer.Status(); status == 404 {
-			variable.ZapLog.Warn("Request log", zap.String("error", string(str)))
+			variable.ZapLog.Warn("Request log 404", zap.String("error", string(str)))
 		} else if status >= 500 {
-			variable.ZapLog.Error("Request log", zap.String("error", string(str)))
+			variable.ZapLog.Error("Request log >= 500", zap.String("error", string(str)))
 		} else {
 			variable.ZapLog.Info("Request log", zap.String("info", string(str)))
 		}
