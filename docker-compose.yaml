@@ -7,9 +7,7 @@ services:
     networks:
       - my-network
     volumes:
-      - /home/docker_volume/anycat/config.yaml:/app/config.yaml
       - /home/docker_volume/anycat/logs:/app/logs
-      - /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro
 
   nginx-proxy:
     image: swr.cn-south-1.myhuaweicloud.com/xiaozuo7/nginx-proxy:v1
