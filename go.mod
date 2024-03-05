@@ -1,6 +1,6 @@
 module anycat
 
-go 1.21.1
+go 1.21.7
 
 require (
 	github.com/gin-gonic/gin v1.9.1
