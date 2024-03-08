@@ -16,6 +16,7 @@ FROM alpine:3.18
 WORKDIR /app
 COPY --from=builder /build/anycat /app/
 COPY --from=builder /build/config.yaml /app/
+COPY --from=builder /build/ssl /app/ssl
 RUN echo "https://mirrors.aliyun.com/alpine/v3.8/main/" > /etc/apk/repositories \
     && echo "https://mirrors.aliyun.com/alpine/v3.8/community/" >> /etc/apk/repositories \
     && apk add --no-cache tzdata \
