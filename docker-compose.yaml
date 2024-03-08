@@ -8,7 +8,6 @@ services:
       - my-network
     volumes:
       - /home/docker_volume/anycat/logs:/app/logs
-      - /home/docker_volume/ssl:/app/ssl
 
   nginx-proxy:
     image: swr.cn-south-1.myhuaweicloud.com/xiaozuo7/nginx-proxy:v1
