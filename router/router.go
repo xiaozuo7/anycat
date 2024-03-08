@@ -21,7 +21,7 @@ func InitRouter() {
 
 	}
 
-	err := r.RunTLS(viper.GetString("httpServer.port"), "/app/ssl/server.ca", "/app/ssl/server.key")
+	err := r.RunTLS(viper.GetString("httpServer.port"), "/app/ssl/server.crt", "/app/ssl/server.key")
 	if err != nil {
 		panic(err)
 	}
