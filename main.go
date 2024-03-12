@@ -4,7 +4,6 @@ import (
 	"anycat/boot"
 	"anycat/global/variable"
 	"anycat/router"
-	"fmt"
 
 	"go.uber.org/zap"
 )
@@ -12,8 +11,7 @@ import (
 func main() {
 	defer func() {
 		if err := recover(); err != nil {
-			variable.ZapLog.Error("=========panic=========", zap.Any("error", err))
-			fmt.Printf("panic: %v\n", err)
+			variable.ZapLog.Errorw("=========panic=========", zap.Any("error", err))
 		}
 	}()
 	router.InitRouter()

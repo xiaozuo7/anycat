@@ -45,17 +45,17 @@ func Log() gin.HandlerFunc {
 		}
 		str, err := json.Marshal(logField)
 		if err != nil {
-			variable.ZapLog.Error("Request log error", zap.Error(err))
+			variable.ZapLog.Errorw("Request log error", zap.Error(err))
 		}
 		if len(c.Errors) > 0 {
-			variable.ZapLog.Error("Request log errors", zap.String("error", c.Errors.ByType(gin.ErrorTypePrivate).String()))
+			variable.ZapLog.Errorw("Request log errors", zap.String("error", c.Errors.ByType(gin.ErrorTypePrivate).String()))
 		}
 		if status := c.Writer.Status(); status == 404 {
-			variable.ZapLog.Warn("Request log 404", zap.String("error", string(str)))
+			variable.ZapLog.Warnw("Request log 404", zap.String("error", string(str)))
 		} else if status >= 500 {
-			variable.ZapLog.Error("Request log >= 500", zap.String("error", string(str)))
+			variable.ZapLog.Errorw("Request log >= 500", zap.String("error", string(str)))
 		} else {
-			variable.ZapLog.Info("Request log", zap.String("info", string(str)))
+			variable.ZapLog.Infow("Request log", zap.String("info", string(str)))
 		}
 	}
 }
