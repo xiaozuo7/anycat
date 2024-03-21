@@ -16,8 +16,7 @@ func InitRouter() {
 
 	router := r.Group("/api/v1")
 	{
-		router.POST("/base_encode", v1.Base64Encode)
-		router.POST("/base_decode", v1.Base64Decode)
+		router.POST("/trans", v1.TransHandler)
 
 	}
 
