@@ -1,5 +1,5 @@
 httpServer:
-  port: ":20100"
+  port: "127.0.0.1:20100"
 
 logs:
   logName: "./logs/anycat.log"

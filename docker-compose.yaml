@@ -4,21 +4,14 @@ services:
   anycat:
     image: swr.cn-south-1.myhuaweicloud.com/xiaozuo7/anycat:v1
     container_name: anycat
-    networks:
-      - my-network
+    network_mode: "host"
     volumes:
       - /home/docker_volume/anycat/logs:/app/logs
 
   nginx-proxy:
     image: swr.cn-south-1.myhuaweicloud.com/xiaozuo7/nginx-proxy:v1
     container_name: nginx-proxy
-    ports:
-      - "80:80"
-    networks:
-      - my-network
+    network_mode: "host"
     volumes:
     - /home/docker_volume/ssl:/etc/nginx/ssl
 
-networks:
-  my-network:
-    driver: bridge
