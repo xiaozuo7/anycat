@@ -9,8 +9,8 @@ import (
 )
 
 func InitRouter() {
-	r := gin.Default()
-	r.Use(gin.Recovery())
+	r := gin.New()
+	r.Use(middleware.CustomRecovery())
 	r.Use(middleware.Cors())
 	r.Use(middleware.Log())
 
