@@ -1,61 +1,83 @@
 package middleware
 
 import (
-	"anycat/global/consts"
 	"anycat/global/variable"
+	"bytes"
 	"encoding/json"
+	"io"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-type logField struct {
-	StartTime string `json:"start_time"`
-	EndTime   string `json:"end_time"`
-	SpendTime string `json:"spend_time"`
-	Hostname  string `json:"hostname"`
-	ClientIP  string `json:"client_ip"`
-	Uri       string `json:"uri"`
-	Method    string `json:"method"`
-	Status    int    `json:"status"`
-	UserAgent string `json:"user_agent"`
+type bodyLogWriter struct {
+	gin.ResponseWriter
+	body *bytes.Buffer
 }
 
-func Log() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Start timer
+func (w bodyLogWriter) Write(b []byte) (int, error) {
+	w.body.Write(b)
+	return w.ResponseWriter.Write(b)
+}
+
+func (w bodyLogWriter) WriteString(s string) (int, error) {
+	w.body.WriteString(s)
+	return w.ResponseWriter.WriteString(s)
+}
+
+type logField struct {
+	Uri         string `json:"uri"`
+	Lantency    string `json:"lantency"`
+	Status      int    `json:"status"`
+	Method      string `json:"method"`
+	Hostname    string `json:"hostname"`
+	ClientIP    string `json:"clientIP"`
+	UserAgent   string `json:"userAgent"`
+	ContentType string `json:"contentType"`
+	ReqBody     string `json:"reqBody"`
+	RespBody    string `json:"respBody"`
+}
+
+func Logger() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		reqBody, _ := ctx.GetRawData()
+		ctx.Request.Body = io.NopCloser(bytes.NewBuffer(reqBody))
+		bodyLogWriter := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
+		ctx.Writer = bodyLogWriter
 		start := time.Now()
-		// Process request
-		c.Next()
-		// Stop timer
+
+		ctx.Next()
+
 		end := time.Now()
-		// Execution time
-		spend := end.Sub(start)
+		latency := end.Sub(start)
+		respBody := ""
+		if bodyLogWriter.body.Len() > 0 {
+			respBody = bodyLogWriter.body.String()
+		}
 		logField := logField{
-			StartTime: start.Format(consts.TimeForMate),
-			EndTime:   end.Format(consts.TimeForMate),
-			SpendTime: spend.String(),
-			Hostname:  c.Request.Host,
-			ClientIP:  c.ClientIP(),
-			Uri:       c.Request.RequestURI,
-			Method:    c.Request.Method,
-			Status:    c.Writer.Status(),
-			UserAgent: c.Request.UserAgent(),
+			Uri:         ctx.Request.RequestURI,
+			Lantency:    latency.String(),
+			Status:      ctx.Writer.Status(),
+			Method:      ctx.Request.Method,
+			Hostname:    ctx.Request.Host,
+			ClientIP:    ctx.ClientIP(),
+			UserAgent:   ctx.Request.UserAgent(),
+			ContentType: ctx.ContentType(),
+			ReqBody:     string(reqBody),
+			RespBody:    respBody,
 		}
 		str, err := json.Marshal(logField)
 		if err != nil {
-			variable.ZapLog.Errorw("Request log error", zap.Error(err))
+			variable.ZapLog.Errorw("Request log json.Marshal failed", zap.Error(err))
+			return
 		}
-		if len(c.Errors) > 0 {
-			variable.ZapLog.Errorw("Request log errors", zap.String("error", c.Errors.ByType(gin.ErrorTypePrivate).String()))
-		}
-		if status := c.Writer.Status(); status == 404 {
-			variable.ZapLog.Warnw("Request log 404", zap.String("error", string(str)))
+		if status := ctx.Writer.Status(); status == 404 {
+			variable.ZapLog.Warnw("Request log 404", zap.String("info", string(str)))
 		} else if status >= 500 {
-			variable.ZapLog.Errorw("Request log >= 500", zap.String("error", string(str)))
+			variable.ZapLog.Errorw("Request log >= 500", zap.String("info", string(str)))
 		} else {
-			variable.ZapLog.Infow("Request log", zap.String("info", string(str)))
+			variable.ZapLog.Infow("Request log 200", zap.String("info", string(str)))
 		}
 	}
 }
