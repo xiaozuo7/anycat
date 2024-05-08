@@ -16,7 +16,7 @@ func InitRouter() {
 
 	router := r.Group("/api/v1")
 	{
-		router.POST("/trans", v1.TransHandler)
+		router.POST("/trans", v1.TransHandler) // 翻译
 
 	}
 
