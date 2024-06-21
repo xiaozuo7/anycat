@@ -56,7 +56,7 @@ func Logger() gin.HandlerFunc {
 			respBody = bodyLogWriter.body.String()
 		}
 		logField := logField{
-			Uri:         ctx.Request.RequestURI,
+			Uri:         ctx.Request.URL.Path,
 			Lantency:    latency.String(),
 			Status:      ctx.Writer.Status(),
 			Method:      ctx.Request.Method,
